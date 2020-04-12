@@ -1,0 +1,32 @@
+{
+  "name": "hangul-practice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/react": "^16.9.31",
+    "@types/react-dom": "^16.9.6",
+    "@types/styled-components": "^5.0.1",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "2.0.2",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "hangul-js": "^0.2.6",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.0.1"
+  },
+  "scripts": {
+    "format": "prettier 'src/**/*.(ts|tsx|js|jsx|json)' --write",
+    "serve": "parcel serve public/index.html",
+    "watch": "parcel watch public/index.html"
+  }
+}
