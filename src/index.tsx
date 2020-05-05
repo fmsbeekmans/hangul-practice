@@ -1,26 +1,25 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import _ from "lodash";
 
 import { App } from "./App";
-import { Filter, filterKeys, randomSyllable } from "./Exercise";
-import { RowName, Section, hangul } from "./KeyboardLayout";
+import { randomSyllable} from "./Exercise";
+import { Filter, homeRow, topRow, lowercaseOnly } from "./Filter";
+import { hangul } from "./KeyboardLayout";
 import { Exercise } from "./Components/Exercise";
 
-const f: Filter = {
-  lowercase: true,
-  uppercase: false,
-  sections: [Section.LeftHand, Section.Middle, Section.RightHand],
-  rows: [RowName.HomeRow],
-};
+const f1 = _.fromPairs(_.map(topRow, (code) => [code, lowercaseOnly]))
+const f2 = _.fromPairs(_.map(homeRow, (code) => [code, lowercaseOnly]))
+
 
 ReactDOM.render(
   <App
     exercise={{
-      filter: f,
+      filter: f1,
       gen: randomSyllable(hangul),
     }}
     keyboardLayout={hangul}
-    size={10}
+    size={9}
   >
     <Exercise />
   </App>,

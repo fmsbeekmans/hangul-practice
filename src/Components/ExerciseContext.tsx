@@ -9,6 +9,8 @@ export interface ExerciseContextProps {
   setProgress: (progress: string) => void;
   instruction: string;
   setInstruction: (progress: string) => void;
+  cursor: number;
+  setCursor: (cursor: number) => void;
   keyboardLayout: KeyboardLayout;
 }
 

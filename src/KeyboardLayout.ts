@@ -1,27 +1,11 @@
-export enum Section {
-  LeftOutside,
-  LeftHand,
-  Middle,
-  RightHand,
-  RightOutside,
-}
-
-export enum RowName {
-  TopRow,
-  HomeRow,
-  BottomRow,
-}
+import _ from "lodash";
 
 export interface Row {
-  leftOffset: number;
-  rightOffset: number;
-  row: RowName;
   keys: Key[];
 }
 
 export interface SymbolKey {
   type: "SymbolKey";
-  section: Section;
   lowercase: string;
   uppercase: string;
   code: string;
@@ -44,252 +28,243 @@ export interface KeyboardLayout {
   rows: Row[];
 }
 
+const isSymbolKey = (key: Key): boolean => key.type == "SymbolKey";
+
+export const codeToString = (
+  keyboardLayout: KeyboardLayout
+): ((keyCode: string, shift: boolean) => string | undefined) => {
+  const mapping = _(symbolKeys(keyboardLayout))
+    .map(key => [key.code, key])
+    .fromPairs()
+    .value();
+
+  return (code: string, shift: boolean) => {
+    if (mapping[code]) {
+      return mapping[code][shift ? "uppercase" : "lowercase"];
+    } else {
+      return undefined;
+    }
+  };
+};
+
+export const symbolKeys = (keyboardLayout: KeyboardLayout): SymbolKey[] =>
+  _(keyboardLayout.rows)
+    .flatMap(({ keys }) => keys)
+    .filter(isSymbolKey)
+    .map((key: SymbolKey) => key)
+    .value()
+
 export const hangul: KeyboardLayout = {
   rows: [
     {
-      leftOffset: 0.5,
-      rightOffset: 1,
-      row: RowName.TopRow,
       keys: [
         {
           type: "Padding",
           size: 0.5,
-          side: "Left"
+          side: "Left",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅂ",
           uppercase: "ㅃ",
           code: "KeyQ",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅈ",
           uppercase: "ㅉ",
-          code: "keyW",
+          code: "KeyW",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㄷ",
           uppercase: "ㄸ",
-          code: "keyE",
+          code: "KeyE",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㄱ",
           uppercase: "ㄲ",
-          code: "keyR",
+          code: "KeyR",
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅅ",
           uppercase: "ㅆ",
-          code: "keyT",
+          code: "KeyT",
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅛ",
           uppercase: "ㅛ",
-          code: "keyY",
+          code: "KeyY",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅕ",
           uppercase: "ㅕ",
-          code: "keyU",
+          code: "KeyU",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅑ",
           uppercase: "ㅑ",
-          code: "keyI",
+          code: "KeyI",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅐ",
           uppercase: "ㅒ",
-          code: "keyO",
+          code: "KeyO",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅔ",
           uppercase: "ㅖ",
-          code: "keyP",
+          code: "KeyP",
         },
         {
-          type: "Placeholder"
+          type: "Placeholder",
         },
         {
           type: "Padding",
           size: 1,
-          side: "Right"
+          side: "Right",
         },
       ],
     },
     {
-      leftOffset: 1,
-      rightOffset: 1.5,
-      row: RowName.HomeRow,
       keys: [
         {
           type: "Padding",
           size: 1,
-          side: "Left"
+          side: "Left",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅁ",
           uppercase: "ㅁ",
           code: "KeyA",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㄴ",
           uppercase: "ㄴ",
-          code: "keyS",
+          code: "KeyS",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅇ",
           uppercase: "ㅇ",
-          code: "keyD",
+          code: "KeyD",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㄹ",
           uppercase: "ㄹ",
-          code: "keyF",
+          code: "KeyF",
           nipple: true,
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅎ",
           uppercase: "ㅎ",
-          code: "keyG",
+          code: "KeyG",
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅗ",
           uppercase: "ㅗ",
-          code: "keyH",
+          code: "KeyH",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅓ",
           uppercase: "ㅓ",
-          code: "keyJ",
+          code: "KeyJ",
           nipple: true,
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅏ",
           uppercase: "ㅏ",
-          code: "keyK",
+          code: "KeyK",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅣ",
           uppercase: "ㅣ",
-          code: "keyL",
+          code: "KeyL",
         },
         {
-          type: "Placeholder"
+          type: "Placeholder",
         },
         {
           type: "Padding",
           size: 1.5,
-          side: "Right"
+          side: "Right",
         },
       ],
     },
     {
-      leftOffset: 1.5,
-      rightOffset: 3,
-      row: RowName.BottomRow,
       keys: [
         {
           type: "Padding",
           size: 1.5,
-          side: "Left"
+          side: "Left",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅋ",
           uppercase: "ㅋ",
           code: "KeyZ",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅌ",
           uppercase: "ㅌ",
-          code: "keyX",
+          code: "KeyX",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅊ",
           uppercase: "ㅊ",
-          code: "keyC",
+          code: "KeyC",
         },
         {
           type: "SymbolKey",
-          section: Section.LeftHand,
           lowercase: "ㅍ",
           uppercase: "ㅍ",
-          code: "keyV",
+          code: "KeyV",
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅠ",
           uppercase: "ㅠ",
-          code: "keyB",
+          code: "KeyB",
         },
         {
           type: "SymbolKey",
-          section: Section.Middle,
           lowercase: "ㅜ",
           uppercase: "ㅜ",
-          code: "keyN",
+          code: "KeyN",
         },
         {
           type: "SymbolKey",
-          section: Section.RightHand,
           lowercase: "ㅡ",
           uppercase: "ㅡ",
-          code: "keyM",
+          code: "KeyM",
         },
         {
-          type: "Placeholder"
+          type: "Placeholder",
         },
         {
-          type: "Placeholder"
+          type: "Placeholder",
         },
         {
           type: "Padding",
-          size: 1,
-          side: "Right"
+          size: 2,
+          side: "Right",
         },
       ],
     },

@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { KeyboardLayout } from "../KeyboardLayout";
-import { filterKeys } from "../Exercise";
+import { filterKeys } from "../Filter";
 import { ExerciseContext } from "./ExerciseContext";
 
 const Container = styled.div`
@@ -48,14 +48,15 @@ const KeyCap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  user-select: none;
 `;
 
 const Nipple = styled.div`
-  width: calc(100% - 6px);
-  border: 1px solid ${(props: KeyCapProps) => (props.active ? "#aaa" : "#ddd")};
-  border-radius: 2px;
+  width: calc(100% - 12px);
+  border-bottom: 1px solid
+    ${(props: KeyCapProps) => (props.active ? "#444" : "#ddd")};
   height: 1px;
-  margin-top: 7px;
+  margin-top: 6px;
 
   box-sizing: border-box;
 `;
@@ -67,26 +68,22 @@ const Caption = styled.span`
   color: #444;
 `;
 
-const Key: React.FunctionComponent<KeyProps & KeyCapProps> = ({
-  caption,
-  active,
-  nipple,
-}) => (
+const Key: React.FunctionComponent<KeyProps & KeyCapProps> = (props) => (
   <Cell>
-    <KeyCap active={active}>
-      <Caption>{caption || ""}</Caption>
-      {nipple ? <Nipple active={active} /> : <></>}
+    <KeyCap active={props.active}>
+      <Caption>{props.caption || ""}</Caption>
+      {props.nipple ? <Nipple active={props.active} /> : <></>}
     </KeyCap>
   </Cell>
 );
 
-const PaddingKey: React.FunctionComponent<CellProps> = ({
-  size,
-}) => (
+const PaddingKey: React.FunctionComponent<CellProps> = ({ size }) => (
   <Cell size={size}>
     <KeyCap active={false} />
   </Cell>
-)
+);
+
+
 
 export const Keyboard: React.FunctionComponent = () => {
   const ctx = React.useContext(ExerciseContext);
@@ -107,17 +104,9 @@ export const Keyboard: React.FunctionComponent = () => {
                   />
                 );
               case "Padding":
-                return (
-                  <PaddingKey
-                    size={key.size}
-                  />
-                );
+                return <PaddingKey size={key.size} />;
               case "Placeholder":
-                return (
-                  <PaddingKey
-                    size={1}
-                  />
-                );
+                return <PaddingKey size={1} />;
             }
           })}
         </Row>

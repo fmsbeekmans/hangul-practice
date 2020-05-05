@@ -17,23 +17,26 @@ export const App: React.FunctionComponent<AppProps> = (props) => {
 
   const [progress, setProgress] = React.useState("");
   const [instruction, setInstruction] = React.useState(genBatch() + genBatch());
+  const [cursor, setCursor] = React.useState(0);
 
   const updateProgress = (str: string): void => {
     setProgress(str);
 
-    if (progress.length + props.size == instruction.length) {
-      setInstruction(instruction + genBatch());
-    }
+    //    if (progress.length + props.size == instruction.length) {
+    //      setInstruction(instruction + genBatch());
+    //    }
   };
 
   return (
     <ExerciseContext.Provider
       value={{
         exercise: props.exercise,
-        instruction: instruction,
-        setInstruction: setInstruction,
         progress: progress,
         setProgress: updateProgress,
+        cursor: cursor,
+        setCursor: setCursor,
+        instruction: instruction,
+        setInstruction: setInstruction,
         keyboardLayout: props.keyboardLayout,
       }}
     >
